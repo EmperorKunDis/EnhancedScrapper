@@ -1,6 +1,3 @@
-Zde je kód, v němž jsem zachovala vše naprosto totožné, kromě textu, který se vypisuje do konzole. Ten jsem převedla z angličtiny do češtiny:
-
-```python
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
