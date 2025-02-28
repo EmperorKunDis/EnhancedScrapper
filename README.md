@@ -44,11 +44,6 @@ Tento projekt konsoliduje a rozšiřuje funkce tří původních skriptů pro we
    ```bash
    cd enhanced-web-scraper
    ```
-3. Nainstalujte potřebné knihovny:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *Poznámka: Pokud soubor `requirements.txt` neexistuje, vytvořte jej s uvedenými závislostmi.*
 
 ## Použití
 1. Spusťte skript:
@@ -76,7 +71,18 @@ Tento projekt konsoliduje a rozšiřuje funkce tří původních skriptů pro we
 Praut s.r.o. nabízí komplexní řešení v oblasti automatizace a implementace AI, ať už lokálně nebo v cloudu. Klienti získávají podrobné manuály a přístup ke svému portálu, jehož dashboard je pravidelně aktualizován. AI bot společnosti umí personalizovat komunikaci na základě údajů o jménu, e-mailu či historii nákupů, čímž efektivně reaguje na dotazy. Systém navíc zajišťuje kontinuální analytiku a zpětnou vazbu pomocí metrik CSAT/NPS, a v případě krizových scénářů klienty okamžitě informuje o příčinách problémů a předpokládaných termínech opravy. Praut s.r.o. také přizpůsobuje odpovědi regionálním jazykům, měnám a předpisům, a podporuje možnosti upsellingu a cross-sellingu, aby zajistila maximální spokojenost klientů.
 
 ## Licence
-*(Zvolte vhodnou licenci – např. MIT, pokud je software distribuován jako open source.)*
+VŠECHNA PRÁVA VYHRAZENA
+
+Copyright (c) 2025 Praut s.r.o.
+
+Tento software (dále jen "Produkt") a veškerá práva k němu jsou výhradním majetkem společnosti Praut s.r.o. 
+Bez předchozího písemného souhlasu společnosti Praut s.r.o. není dovoleno kopírovat, distribuovat, modifikovat, 
+dekompilovat, zpětně analyzovat ani jiným způsobem využívat jakoukoli část Produktu.
+
+Tento software je poskytován "TAK, JAK JE" bez jakýchkoli záruk, výslovných i předpokládaných. Společnost Praut s.r.o. 
+neodpovídá za žádné škody vzniklé používáním tohoto softwaru.
+
+Jakékoliv neoprávněné užití bude považováno za porušení autorských práv a bude řešeno v souladu s platnými zákony.
 
 ---
 
