@@ -7,36 +7,36 @@ from typing import Tuple, List, Set, Optional
 
 class EnhancedWebScraper:
     """
-    Enhanced web scraping utility with domain-specific filtering,
-    content extraction, and duplicate prevention mechanisms.
+    Vylepšený nástroj pro web scraping s filtrováním dle domény,
+    extrakcí obsahu a mechanismy prevence duplicit.
     """
     
     def __init__(self, storage_dir: str = None) -> None:
         """
-        Initialize the web scraper with storage location configuration.
+        Inicializace webového scraperu s konfigurací umístění úložiště.
         
-        Args:
-            storage_dir: Custom storage directory path. Defaults to user's Documents/Source.
+        Parametry:
+            storage_dir: Vlastní cesta k adresáři úložiště. Ve výchozím nastavení je to "Dokumenty/Zdroj" uživatele.
         """
         self.root_url = ""
         if storage_dir:
             self.storage_dir = storage_dir
         else:
-            self.storage_dir = os.path.join(os.path.expanduser("~"), "Dokumenty", "Source")
+            self.storage_dir = os.path.join(os.path.expanduser("~"), "Dokumenty", "Zdroj")
         
-        # Ensure storage directory exists
+        # Zajistit, že adresář úložiště existuje
         os.makedirs(self.storage_dir, exist_ok=True)
         
-        # File paths for persistent storage
-        self.content_file = os.path.join(self.storage_dir, "DesignPatterns.txt")
+        # Cesty k souborům pro perzistentní ukládání
+        self.content_file = os.path.join(self.storage_dir, "NavrhoveVzory.txt")
         self.url_list_file = os.path.join(self.storage_dir, "URL_seznam.txt")
 
     def set_root_url(self, url: str = None) -> None:
         """
-        Set the root URL for domain-specific filtering.
+        Nastavení kořenové URL pro filtrování dle domény.
         
-        Args:
-            url: Root URL string. If None, prompts for user input.
+        Parametry:
+            url: Řetězec kořenové URL. Pokud není zadáno, vyzve uživatele k zadání.
         """
         if url:
             self.root_url = url
@@ -46,30 +46,30 @@ class EnhancedWebScraper:
 
     def scrape_website(self, url: str) -> Tuple[Optional[str], Optional[List[Tuple[str, str]]]]:
         """
-        Scrape website content and extract links.
+        Procházení obsahu webové stránky a extrakce odkazů.
         
-        Args:
-            url: Target URL to scrape.
+        Parametry:
+            url: Cílová URL pro prohledávání.
             
-        Returns:
-            Tuple containing (page_text_content, list_of_links) or (None, None) on failure.
+        Návratová hodnota:
+            N-tice obsahující (textový obsah stránky, seznam odkazů) nebo (None, None) při neúspěchu.
         """
         try:
-            # Request the webpage with timeout
+            # Odeslání požadavku na webovou stránku s časovým limitem
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             
-            # Parse HTML content
+            # Parsování HTML obsahu
             soup = BeautifulSoup(response.text, "html.parser")
             text_content = soup.get_text(separator=" ", strip=True)
             
-            # Extract and normalize links
+            # Extrahování a normalizace odkazů
             links = []
             for a_tag in soup.find_all("a", href=True):
                 link = urljoin(url, a_tag["href"])
                 link_text = a_tag.text.strip()
                 
-                # Filter links by root URL if specified
+                # Filtrování odkazů dle kořenové URL, pokud je specifikována
                 if not self.root_url or link.startswith(self.root_url):
                     links.append((link, link_text))
                     
@@ -81,11 +81,11 @@ class EnhancedWebScraper:
 
     def save_to_file(self, content: str, filename: str) -> None:
         """
-        Append content to the specified file.
+        Přidání obsahu do specifikovaného souboru.
         
-        Args:
-            content: Text content to save.
-            filename: Target filename within storage directory.
+        Parametry:
+            content: Textový obsah k uložení.
+            filename: Název souboru v rámci adresáře úložiště.
         """
         file_path = os.path.join(self.storage_dir, filename)
         with open(file_path, "a", encoding="utf-8") as file:
@@ -93,10 +93,10 @@ class EnhancedWebScraper:
 
     def read_url_list(self) -> Set[str]:
         """
-        Read previously processed URLs from URL list file.
+        Načtení dříve zpracovaných URL ze souboru seznamu URL.
         
-        Returns:
-            Set of processed URL strings.
+        Návratová hodnota:
+            Množina zpracovaných URL.
         """
         processed_urls = set()
         
@@ -114,10 +114,10 @@ class EnhancedWebScraper:
 
     def remove_duplicates_from_url_list(self) -> int:
         """
-        Remove duplicate URLs from URL list file.
+        Odstranění duplicitních URL ze souboru seznamu URL.
         
-        Returns:
-            Number of duplicates removed.
+        Návratová hodnota:
+            Počet odstraněných duplicit.
         """
         if not os.path.exists(self.url_list_file):
             return 0
@@ -154,31 +154,31 @@ class EnhancedWebScraper:
 
     def extract_sentences(self, text: str) -> List[str]:
         """
-        Extract valid sentences from text content.
+        Extrahování platných vět z textového obsahu.
         
-        Args:
-            text: Input text to process.
+        Parametry:
+            text: Vstupní text ke zpracování.
             
-        Returns:
-            List of properly formatted sentences.
+        Návratová hodnota:
+            Seznam správně formátovaných vět.
         """
-        # Regex pattern for sentence splitting
+        # Regex vzor pro dělení vět
         sentence_pattern = r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s(?=[A-Z])'
         sentences = re.split(sentence_pattern, text)
         
-        # Filter for valid, properly formatted sentences
+        # Filtrování platných, správně formátovaných vět
         valid_sentences = [s.strip() for s in sentences if re.match(r'^[A-Z].*[.!?]$', s.strip())]
         return valid_sentences
 
     def filter_urls_by_domain(self, urls: List[str]) -> List[str]:
         """
-        Filter URLs to include only those matching the root domain.
+        Filtrování URL tak, aby obsahovaly pouze ty odpovídající kořenové doméně.
         
-        Args:
-            urls: List of URLs to filter.
+        Parametry:
+            urls: Seznam URL ke filtrování.
             
-        Returns:
-            Filtered list of domain-matching URLs.
+        Návratová hodnota:
+            Filtrovaný seznam URL odpovídajících doméně.
         """
         if not self.root_url:
             return urls
@@ -187,7 +187,7 @@ class EnhancedWebScraper:
 
     def scrape_urls_interactive(self) -> None:
         """
-        Interactive scraping loop for URL processing.
+        Interaktivní cyklus pro prohledávání URL.
         """
         existing_urls = self.read_url_list()
         print(f"Nalezeno {len(existing_urls)} již dříve zpracovaných URL.")
@@ -200,7 +200,7 @@ class EnhancedWebScraper:
             text, hyperlinks = self.scrape_website(url)
 
             if text and hyperlinks:
-                # Process and save content
+                # Zpracování a uložení obsahu
                 content_to_save = f"URL: {url}\n\nObsah:\n{text}"
                 self.save_to_file(content_to_save, "DataZAdresy.txt")
 
